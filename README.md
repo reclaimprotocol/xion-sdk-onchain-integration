@@ -53,9 +53,9 @@ The optimized contract will be stored as:
 ---
 
 ### **Step 3: Upload the Bytecode to the Blockchain**
-First, set your wallet address:
+First, set your wallet name:
 ```sh
-WALLET="your-wallet-address-here"
+WALLET="your-wallet-name-here"
 ```
 
 Now, upload the contract to the blockchain:
