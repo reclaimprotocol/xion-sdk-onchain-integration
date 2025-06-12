@@ -1,8 +1,12 @@
-# **CW Counter Starter Contract**
+# **Reclaim-XION Integration**
 
-This is a basic CosmWasm smart contract that allows you to set a counter and then either **increment** or **reset** it. You can also query the current counter value.
+Reclaim Verifier on top of XION network.
 
----
+## Deployments
+
+| Chain Name | Deployed Address | Explorer Link |
+|:-----------|:-----------------|:--------------|
+| xion-testnet-2 | xion1zcphm9wllvmtlhclvwh8qrlcx46p5mwe4yfdve0c95xfh6arsejspq5nvd | https://explorer.burnt.com/xion-testnet-2/account/xion1zcphm9wllvmtlhclvwh8qrlcx46p5mwe4yfdve0c95xfh6arsejspq5nvd|
 
 ## **Prerequisites**
 
@@ -17,12 +21,12 @@ Before deploying the contract, ensure you have the following:
 
 ---
 
-## **Deploy and Interact with the Contract**
+## **Deploy and Instantiate the Contract**
 
 ### **Step 1: Clone the Repository**
 ```sh
-git clone https://github.com/burnt-labs/cw-counter
-cd cw-counter
+git clone https://github.com/reclaimprotocol/xion-sdk-onchain-integration.git
+cd xion-sdk-onchain-integration
 ```
 
 ---
@@ -43,7 +47,7 @@ docker run --rm -v "$(pwd)":/code \
 
 The optimized contract will be stored as:
 ```
-cw-counter/artifacts/cw_counter.wasm
+/artifacts/reclaim_xion.wasm
 ```
 
 ---
@@ -56,13 +60,13 @@ WALLET="your-wallet-address-here"
 
 Now, upload the contract to the blockchain:
 ```sh
-RES=$(xiond tx wasm store ./artifacts/cw_counter.wasm \
-      --chain-id xion-testnet-1 \
+RES=$(xiond tx wasm store ./artifacts/reclaim_xion.wasm \
+      --chain-id xion-testnet-2 \
       --gas-adjustment 1.3 \
-      --gas-prices 0.1uxion \
+      --gas-prices 0.001uxion \
       --gas auto \
       -y --output json \
-      --node https://rpc.xion-testnet-1.burnt.com:443 \
+      --node https://rpc.xion-testnet-2.burnt.com:443 \
       --from $WALLET)
 ```
 
@@ -104,22 +108,22 @@ echo $CODE_ID
 
 Example output:
 ```
-1213
+1248
 ```
 
 ---
 
 ### **Step 5: Instantiate the Contract**
-Set the contract's initialization message:
+Set the contract's initialization message (replace with your own):
 ```sh
-MSG='{ "count": 1 }'
+MSG='{"owner":"xion138lsa3mczwzl9j7flytg0f5r6pldaa8htddq0j"}'
 ```
 
 Instantiate the contract with the **Code ID** from the previous step:
 ```sh
 xiond tx wasm instantiate $CODE_ID "$MSG" \
   --from $WALLET \
-  --label "cw-counter" \
+  --label "reclaim_xion" \
   --gas-prices 0.025uxion \
   --gas auto \
   --gas-adjustment 1.3 \
@@ -159,5 +163,51 @@ echo $CONTRACT
 
 Example output:
 ```
-xion1v6476wrjmw8fhsh20rl4h6jadeh5sdvlhrt8jyk2szrl3pdj4musyxj6gl
+xion1zcphm9wllvmtlhclvwh8qrlcx46p5mwe4yfdve0c95xfh6arsejspq5nvd
 ```
+
+## **Interact with the Contract**
+
+### **Step 1: Setup**
+
+Change directory to the `/node` directory and install packages:
+
+```sh
+cd node
+
+npm install
+```
+
+Then add your credentials to your `.env`:
+
+```sh
+XION_MNEMONIC="your wallet mnemonic phrase here"
+XION_RPC_URL=https://rpc.xion-testnet-2.burnt.com
+XION_CHAIN_ID=xion-testnet-2
+CONTRACT_ADDRESS=xion1zcphm9wllvmtlhclvwh8qrlcx46p5mwe4yfdve0c95xfh6arsejspq5nvd
+```
+
+### **Step 2: Add an Epoch**
+
+While in `/node`, run the command:
+
+```sh
+node add-epoch.js
+```
+
+This will add an Epoch, here is an example [tx](https://explorer.burnt.com/xion-testnet-2/tx/DB83FECEC90208D6438D09FFE8C3982B32D5193170F7055CE3A2AA460D7FB268). 
+
+You can fetch an added Epoch with:
+
+```sh
+node get-epoch.js
+```
+### **Step 3: Verify a Proof**
+
+While in the same directory, run the command:
+
+```sh
+node verify_proof.js 
+```
+
+This will add an Epoch, here is an example [tx](https://explorer.burnt.com/xion-testnet-2/tx/CD29667D64FEC7023F7F2713510FE3C2B41C47AA67CC4D5C96EE3092D139DEBD). 
