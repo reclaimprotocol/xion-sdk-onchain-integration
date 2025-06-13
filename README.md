@@ -211,3 +211,9 @@ node verify_proof.js
 ```
 
 This will add an Epoch, here is an example [tx](https://explorer.burnt.com/xion-testnet-2/tx/CD29667D64FEC7023F7F2713510FE3C2B41C47AA67CC4D5C96EE3092D139DEBD). 
+
+You can try Reclaim's ZkFetch tool as well for generating proofs:
+
+```sh
+node zkfetch.js 
+```
