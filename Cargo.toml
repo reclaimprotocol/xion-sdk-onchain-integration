@@ -57,4 +57,3 @@ digest = {version = "0.10", default-features = false }
 
 [dev-dependencies]
 cw-multi-test = "0.17.0"
-cw-orch = "0.24.1"
