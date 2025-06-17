@@ -1,4 +1,3 @@
-#[cfg(not(feature = "library"))]
 use {
     crate::state::{get_all_epochs, CONFIG, EPOCHS},
     cosmwasm_std::entry_point,
