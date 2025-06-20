@@ -1,8 +1,8 @@
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 use cosmwasm_std::{Addr, Uint128};
 use cosmwasm_std::{Order, StdResult, Storage};
 use cw_storage_plus::{Item, Map};
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 
 pub const EPOCHS: Map<u128, Epoch> = Map::new("epochs");
 pub const CONFIG: Item<Config> = Item::new("config");
